@@ -61,8 +61,8 @@ function App() {
       phoneNumber: "testing2",
       role: "ADMIN",
       address: {
-        latitude: 19.9975,
-        longitude: 73.7898,
+        latitude: 18.995933,
+        longitude: 72.821959,
       },
       createAt: "2023-05-06T20:55:02.553Z",
     },

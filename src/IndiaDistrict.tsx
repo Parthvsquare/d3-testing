@@ -29,36 +29,12 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ data }) => {
     const projection = geoMercator();
     const pathGenerator = geoPath().projection(projection);
 
-    const meshStates = [];
-    const meshDistricts = [];
-
     svg
-      .select(".state-borders")
-      .attr("fill", "none")
-      .attr("stroke-width", 1.5)
-      .selectAll("path")
-      .data(meshStates, (d) => d.id)
-      .join(
-        (enter) => enter.append("path").attr("d", path).attr("stroke", "#fff0"),
-        (update) => update,
-        (exit) => exit.transition(T).attr("stroke", "#fff0").remove()
-      )
-      .transition(T)
-      .attr("stroke", strokeColor.bind(this, "40"));
-
-    svg
-      .select(".district-borders")
-      .attr("fill", "none")
-      .attr("stroke-width", 1.5)
-      .selectAll("path")
-      .data(meshDistricts, (d) => d.id)
-      .join(
-        (enter) => enter.append("path").attr("d", path).attr("d", path).attr("stroke", "#fff0"),
-        (update) => update,
-        (exit) => exit.transition(T).attr("stroke", "#fff0").remove()
-      )
-      .transition(T)
-      .attr("stroke", strokeColor.bind(this, "40"));
+      .selectAll(".arcs")
+      .data(india.arcs)
+      .join("path")
+      .attr("class", "")
+      .attr("d", (india) => pathGenerator(india));
   }, [data]);
 
   return (

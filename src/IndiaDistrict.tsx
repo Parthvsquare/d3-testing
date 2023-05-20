@@ -52,26 +52,34 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ data }) => {
   return (
     <ComposableMap
       projection="geoMercator"
+      height={1920}
+      width={1080}
       projectionConfig={{
-        center: [100, 0],
-        scale: 500,
+        center: [80, 10],
+        scale: 1500,
       }}
     >
       <Geographies geography={india}>
         {({ geographies }) =>
           geographies.map((geo) => {
-            const districtCode = geo.properties.district_code;
-            const userCount = userCounts.find((item) => item.districtCode === districtCode)?.count || 0;
+            const districtCode = geo.properties["dt_code"];
+            const userCount = userCounts.find((item) => item.districtCode === Number(districtCode))?.count || 0;
+            console.log("===> ~ file: IndiaDistrict.tsx:67 ~ geographies.map ~ userCount:", userCount);
 
             return (
               <Geography
                 key={geo.rsmKey}
                 geography={geo}
-                fill="#06FE"
                 style={{
                   // Customize the style of each district based on the user count
                   default: {
-                    fill: userCount > 0 ? "#ffedea" : "#EEE",
+                    fill: userCount > 1 ? "red" : "#EEE",
+                  },
+                  pressed: {
+                    fill: "#06FE",
+                  },
+                  hover: {
+                    fill: "#06FE",
                   },
                   // Other style properties
                 }}

@@ -1,6 +1,4 @@
 import "./App.css";
-import IndianDistrict from "../public/india-districts-2019-734.json";
-import * as d3 from "d3";
 import IndiaMap from "./IndiaDistrict";
 
 function App() {
@@ -27,6 +25,8 @@ function App() {
       address: {
         latitude: 18.5204,
         longitude: 73.8567,
+        stateDistrict: "Mumbai City",
+        stateCode: 519,
       },
       createAt: "2023-05-05T21:16:37.960Z",
     },
@@ -39,6 +39,8 @@ function App() {
       address: {
         latitude: 21.1458,
         longitude: 79.0882,
+        stateDistrict: "Mumbai City",
+        stateCode: 519,
       },
       createAt: "2023-05-05T21:17:35.859Z",
     },
@@ -51,6 +53,8 @@ function App() {
       address: {
         latitude: 19.076,
         longitude: 72.8777,
+        stateDistrict: "Mumbai City",
+        stateCode: 519,
       },
       createAt: "2023-05-05T21:53:35.151Z",
     },
@@ -63,6 +67,8 @@ function App() {
       address: {
         latitude: 18.995933,
         longitude: 72.821959,
+        stateDistrict: "Mumbai City",
+        stateCode: 519,
       },
       createAt: "2023-05-06T20:55:02.553Z",
     },

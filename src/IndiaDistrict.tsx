@@ -64,7 +64,6 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ data }) => {
           geographies.map((geo) => {
             const districtCode = geo.properties["dt_code"];
             const userCount = userCounts.find((item) => item.districtCode === Number(districtCode))?.count || 0;
-            console.log("===> ~ file: IndiaDistrict.tsx:67 ~ geographies.map ~ userCount:", userCount);
 
             return (
               <Geography
@@ -76,10 +75,10 @@ const IndiaMap: React.FC<IndiaMapProps> = ({ data }) => {
                     fill: userCount > 1 ? "red" : "#EEE",
                   },
                   pressed: {
-                    fill: "#06FE",
+                    fill: "#EEE",
                   },
                   hover: {
-                    fill: "#06FE",
+                    fill: "#EEE",
                   },
                   // Other style properties
                 }}

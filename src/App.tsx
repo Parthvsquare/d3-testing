@@ -1,3 +1,4 @@
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 import IndiaMap from "./IndiaDistrict";
 
@@ -74,6 +75,87 @@ function App() {
     },
   ];
 
+  type GradeSystemTemplate = {
+    gradeId: string;
+    itemName: string;
+    gradeName: string;
+    gradeUpperLimit: number;
+    gradeLowerLimit: number;
+    makePublic: boolean;
+    userId: string;
+  };
+  const [gradesArray, setGradesArray] = useState([0]);
+  console.log("===> ~ file: App.tsx:88 ~ App ~ gradesArray:", gradesArray);
+
+  const defaultTemplate = {
+    gradeName: "",
+    gradeLowerLimit: gradesArray.at(-1),
+    gradeUpperLimit: "",
+    itemName: "",
+  };
+
+  const inputRef = useRef(null);
+
+  const [gradeTemplateArray, setGradeTemplateArray] = useState<Partial<GradeSystemTemplate>[]>([structuredClone(defaultTemplate)]);
+  console.log("===> ~ file: App.tsx:97 ~ App ~ gradeTemplateArray:", gradeTemplateArray);
+  const itemName = "banana";
+
+  const onEdit = ({ index, gradeLowerLimit, gradeName, gradeUpperLimit }: Partial<GradeSystemTemplate> & { index: number }) => {
+    const newArray = gradeTemplateArray.map((record, recordIndex) => {
+      if (recordIndex === index) {
+        return {
+          itemName: itemName,
+          gradeName: gradeName,
+          gradeUpperLimit: gradeUpperLimit,
+          gradeLowerLimit: gradeLowerLimit,
+        };
+      } else {
+        return record;
+      }
+    });
+    const gradesArrayClone = structuredClone(gradesArray);
+    gradesArrayClone[index] = gradeLowerLimit;
+    gradesArrayClone[index + 1] = gradeUpperLimit;
+    setGradesArray(gradesArrayClone);
+    setGradeTemplateArray(newArray);
+  };
+
+  const removeTemplate = ({ index }: { index: number }) => {
+    const gradesArrayClone = structuredClone(gradesArray);
+    const gradeTemplateArrayClone: Partial<GradeSystemTemplate>[] = structuredClone(gradeTemplateArray);
+    gradesArrayClone[index].pop;
+    setGradeTemplateArray(gradesArrayClone);
+
+    gradeTemplateArrayClone.filter((_, i) => i !== index);
+    setGradeTemplateArray(gradeTemplateArrayClone);
+    const newGradeTemplateArrayClone = gradeTemplateArrayClone.map((record, recordIndex) => {
+      return {
+        gradeName: record.gradeName,
+        gradeLowerLimit: gradesArrayClone[recordIndex],
+        gradeUpperLimit: gradesArrayClone[recordIndex + 1],
+        itemName: record.itemName,
+      };
+    });
+    setGradeTemplateArray(newGradeTemplateArrayClone);
+  };
+
+  const addDefaultTemplate = () => {
+    setGradeTemplateArray((prevArray) => [...prevArray, structuredClone(defaultTemplate)]);
+  };
+
+  const handleChange = (index: number, field: keyof GradeSystemTemplate, value: any) => {
+    setGradeTemplateArray((prevArray) => {
+      const newArray = [...prevArray];
+      newArray[index] = {
+        ...newArray[index],
+        [field]: value,
+      };
+      return newArray;
+    });
+  };
+
+  const userId = "2039423=23423409234";
+
   return (
     <>
       <div
@@ -83,6 +165,54 @@ function App() {
         }}
       >
         <IndiaMap data={data} />
+        {/* {gradeTemplateArray?.map((value, index) => {
+          const inputKey = `${userId}-${index}`;
+          console.log("===> ~ file: App.tsx:169 ~ {gradeTemplateArray?.map ~ inputKey:", inputKey);
+          return (
+            <div key={value.gradeName + userId}>
+              <input type="text" placeholder="gradeName" key={inputKey} value={value.gradeName} onInput={(e) => handleChange(index, "gradeName", e.currentTarget.value)} />
+              <input type="number" placeholder="lower limit" value={value.gradeLowerLimit} onChange={(e) => handleChange(index, "gradeLowerLimit", Number(e.target.value))} />
+              <input type="number" placeholder="upper limit" value={value.gradeUpperLimit} onChange={(e) => handleChange(index, "gradeUpperLimit", Number(e.target.value))} />
+              <button type="button" onClick={() => onEdit({ index, gradeLowerLimit: value.gradeLowerLimit, gradeName: value.gradeName, gradeUpperLimit: value.gradeUpperLimit })}>
+                Save
+              </button>
+            </div>
+          );
+        })} */}
+        {gradeTemplateArray?.map((value, index) => {
+          const handleFocus = () => {
+            inputRef.current.focus();
+          };
+
+          const handleBlur = () => {
+            inputRef.current.blur();
+          };
+
+          return (
+            <div key={index + userId}>
+              <input
+                type="text"
+                placeholder="gradeName"
+                value={value.gradeName}
+                ref={inputRef}
+                onInput={(e) => handleChange(index, "gradeName", e.currentTarget.value)}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+              />
+              <input type="number" placeholder="lower limit" value={value.gradeLowerLimit} onChange={(e) => handleChange(index, "gradeLowerLimit", Number(e.target.value))} />
+              <input type="number" placeholder="upper limit" value={value.gradeUpperLimit} onChange={(e) => handleChange(index, "gradeUpperLimit", Number(e.target.value))} />
+              <button type="button" onClick={() => onEdit({ index, gradeLowerLimit: value.gradeLowerLimit, gradeName: value.gradeName, gradeUpperLimit: value.gradeUpperLimit })}>
+                Save
+              </button>
+            </div>
+          );
+        })}
+
+        {/* <input type="number" placeholder="lower limit" value={gradeTemplateArray?.gradeLowerLimit} />
+              <input type="number" placeholder="upper limit" value={gradeTemplateArray?.gradeUpperLimit} /> */}
+        <button type="button" onClick={addDefaultTemplate}>
+          Add New
+        </button>
       </div>
     </>
   );

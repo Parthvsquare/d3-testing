@@ -128,13 +128,14 @@ function App() {
 
   const removeTemplate = ({ index }: { index: number }) => {
     const gradesArrayClone = structuredClone(gradesArray);
-    const gradeTemplateArrayClone: Partial<GradeSystemTemplate>[] = structuredClone(gradeTemplateArray);
-    gradesArrayClone[index].pop;
-    setGradeTemplateArray(gradesArrayClone);
+    gradesArrayClone.splice(index, 1);
+    setGradesArray(gradesArrayClone);
 
-    gradeTemplateArrayClone.filter((_, i) => i !== index);
-    setGradeTemplateArray(gradeTemplateArrayClone);
-    const newGradeTemplateArrayClone = gradeTemplateArrayClone.map((record, recordIndex) => {
+    const gradeTemplateArrayClone: Partial<GradeSystemTemplate>[] = structuredClone(gradeTemplateArray);
+    const filteredGradeTemplateArrayClone = gradeTemplateArrayClone.filter((_, i) => i !== index);
+
+    setGradeTemplateArray(filteredGradeTemplateArrayClone);
+    const newGradeTemplateArrayClone = filteredGradeTemplateArrayClone.map((record, recordIndex) => {
       return {
         gradeName: record.gradeName,
         gradeLowerLimit: gradesArrayClone[recordIndex],
@@ -142,6 +143,7 @@ function App() {
         itemName: record.itemName,
       };
     });
+
     setGradeTemplateArray(newGradeTemplateArrayClone);
   };
 
@@ -209,6 +211,10 @@ function App() {
               <input type="number" placeholder="upper limit" value={value.gradeUpperLimit} onChange={(e) => handleChange(index, "gradeUpperLimit", Number(e.target.value))} />
               <button type="button" onClick={() => onEdit({ index, gradeLowerLimit: value.gradeLowerLimit, gradeName: value.gradeName, gradeUpperLimit: value.gradeUpperLimit })}>
                 Save
+              </button>
+
+              <button type="button" onClick={() => removeTemplate({ index: index })}>
+                Remove
               </button>
             </div>
           );

@@ -173,20 +173,6 @@ function App() {
         }}
       >
         <IndiaMap data={data} />
-        {/* {gradeTemplateArray?.map((value, index) => {
-          const inputKey = `${userId}-${index}`;
-          console.log("===> ~ file: App.tsx:169 ~ {gradeTemplateArray?.map ~ inputKey:", inputKey);
-          return (
-            <div key={value.gradeName + userId}>
-              <input type="text" placeholder="gradeName" key={inputKey} value={value.gradeName} onInput={(e) => handleChange(index, "gradeName", e.currentTarget.value)} />
-              <input type="number" placeholder="lower limit" value={value.gradeLowerLimit} onChange={(e) => handleChange(index, "gradeLowerLimit", Number(e.target.value))} />
-              <input type="number" placeholder="upper limit" value={value.gradeUpperLimit} onChange={(e) => handleChange(index, "gradeUpperLimit", Number(e.target.value))} />
-              <button type="button" onClick={() => onEdit({ index, gradeLowerLimit: value.gradeLowerLimit, gradeName: value.gradeName, gradeUpperLimit: value.gradeUpperLimit })}>
-                Save
-              </button>
-            </div>
-          );
-        })} */}
         {gradeTemplateArray?.map((value, index) => {
           const handleFocus = () => {
             inputRef.current.focus();

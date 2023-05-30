@@ -97,26 +97,32 @@ function App() {
   const inputRef = useRef(null);
 
   const [gradeTemplateArray, setGradeTemplateArray] = useState<Partial<GradeSystemTemplate>[]>([structuredClone(defaultTemplate)]);
-  console.log("===> ~ file: App.tsx:97 ~ App ~ gradeTemplateArray:", gradeTemplateArray);
   const itemName = "banana";
 
   const onEdit = ({ index, gradeLowerLimit, gradeName, gradeUpperLimit }: Partial<GradeSystemTemplate> & { index: number }) => {
+    const gradesArrayClone = structuredClone(gradesArray);
+    gradesArrayClone[index] = gradeLowerLimit;
+    gradesArrayClone[index + 1] = gradeUpperLimit;
+
+    setGradesArray(gradesArrayClone);
+    console.log("===> ~ file: App.tsx:124 ~ onEdit ~ gradesArrayClone:", gradesArrayClone);
+
     const newArray = gradeTemplateArray.map((record, recordIndex) => {
       if (recordIndex === index) {
         return {
           itemName: itemName,
           gradeName: gradeName,
-          gradeUpperLimit: gradeUpperLimit,
-          gradeLowerLimit: gradeLowerLimit,
+          gradeLowerLimit: gradesArrayClone[recordIndex],
+          gradeUpperLimit: gradesArrayClone[recordIndex + 1],
         };
       } else {
-        return record;
+        return {
+          ...record,
+          gradeLowerLimit: gradesArrayClone[recordIndex],
+          gradeUpperLimit: gradesArrayClone[recordIndex + 1],
+        };
       }
     });
-    const gradesArrayClone = structuredClone(gradesArray);
-    gradesArrayClone[index] = gradeLowerLimit;
-    gradesArrayClone[index + 1] = gradeUpperLimit;
-    setGradesArray(gradesArrayClone);
     setGradeTemplateArray(newArray);
   };
 
